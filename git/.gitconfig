@@ -1,3 +1,5 @@
 [user]
 	email = lukalazarevic00@gmail.com
 	name = Luka Lazarević
+[diff]
+	tool = nvimdiff

@@ -5,7 +5,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 vim.filetype.add({
-	extension = { njk = "njk" },
+	extension = { njk = "twig" },
 })
 
 -- Set to true if you have a Nerd Font installed
@@ -580,7 +580,7 @@ require("lazy").setup({
 					{
 						"rafamadriz/friendly-snippets",
 						config = function()
-							require("luasnip").filetype_extend("njk", { "html" })
+							require("luasnip").filetype_extend("twig", { "html" })
 							require("luasnip.loaders.from_vscode").lazy_load()
 						end,
 					},
@@ -655,7 +655,12 @@ require("lazy").setup({
 					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
-					{ name = "nvim_lsp" },
+					{
+						name = "nvim_lsp",
+						entry_filter = function(entry)
+							return require("cmp").lsp.CompletionItemKind.Snippet ~= entry:get_kind()
+						end,
+					},
 					{ name = "luasnip" },
 					{ name = "path" },
 				},

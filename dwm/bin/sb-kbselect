@@ -1,0 +1,25 @@
+#!/bin/sh
+
+source sb-status2d
+
+path=~/.config/.keyboard-layouts
+query=$(setxkbmap -query)
+
+currentLayout="$(echo $query | grep -oP 'layout:\s*\K\w+')"
+currentVariant="$(echo $query | grep -oP 'variant:\s*\K\w+')"
+[ $currentVariant ] && currentLayout="$currentLayout $currentVariant"
+
+kb=$(grep "$currentLayout$" -m 1 $path | awk '{print $1}')
+
+case $BLOCK_BUTTON in
+	1) kb_choice="$(awk '/! layout/{flag=1; next} /! variant/{flag=0} flag {print $2, "- " $1}' /usr/share/X11/xkb/rules/base.lst | dmenu -l 15)"
+	[ -z "$kb_choice" ] && exit 0
+	printf "%s" "$kb_choice"
+	kb="$(echo "$kb_choice" | awk '{print $3}')"
+	setxkbmap "$kb";;
+	3) notify-send "⌨  Keyboard/language module" "$(printf "%s" "\- Current layout: $(setxkbmap -query | grep -oP 'layout:\s*\K\w+')")
+- Left click to change keyboard.";;
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+printf "%s%s %s %s" "$dark" "$green_bg" "$kb" "$s2d_reset" && exit 0

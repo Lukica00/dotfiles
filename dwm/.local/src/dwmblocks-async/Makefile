@@ -1,5 +1,7 @@
 .POSIX:
 
+include config.mk
+
 BIN := dwmblocks
 BUILD_DIR := build
 SRC_DIR := src
@@ -9,7 +11,6 @@ DEBUG := 0
 VERBOSE := 0
 LIBS := xcb-atom
 
-PREFIX := /usr/local
 CFLAGS := -Ofast -I. -I$(INC_DIR) -std=c99
 CFLAGS += -DBINARY=\"$(BIN)\" -D_POSIX_C_SOURCE=200809L
 CFLAGS += -Wall -Wpedantic -Wextra -Wswitch-enum

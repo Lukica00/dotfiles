@@ -1,8 +1,10 @@
-cd /usr/local/src/dmenu
-sudo make install
+#!/bin/sh
 
-cd /usr/local/src/dwmblocks
-sudo make install
+cd ~/.local/src/dmenu
+make install
 
-cd /usr/local/src/dwm
-sudo make install
+cd ~/.local/src/dwmblocks-async
+make install
+
+cd ~/.local/src/dwm
+make install

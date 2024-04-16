@@ -34,7 +34,7 @@ case $BLOCK_BUTTON in
 	kb=$(echo $linija | awk '{print $1}')
 	setxkbmap $(echo $linija | awk '{if($3!="") printf "-layout %s -variant %s",$2,$3; else print $2}') ;;
 	
-	6) setsid -f "alacritty" -e "nvim" "$0" ;;
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
 printf "%s%s %s %s" "$dark" "$green_bg" "$kb" "$s2d_reset" && exit 0

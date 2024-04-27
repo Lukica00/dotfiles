@@ -1,0 +1,41 @@
+#!/bin/sh
+
+source sb-status2d
+
+# Prints the current mic volume or 󰍭 if muted.
+
+case $BLOCK_BUTTON in
+	1) setsid -w -f "$TERMINAL" -e pulsemixer; pkill -41 "${STATUSBAR}" ;;
+	2) wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle ;;
+	4) wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+ ;;
+	5) wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%- ;;
+	3) notify-send "󰍬 Microphone module" "\- Shows volume 󰍬, 󰍭 if muted.
+- Left click to open mixer.
+- Right click to mute.
+- Scroll to change by 5%. Mod scroll for 1%" ;;
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+	9) wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%+ ;;
+	10) wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%- ;;
+esac
+
+vol="$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)"
+
+# If muted, print 󰍭 and exit.
+[ "$vol" != "${vol%\[MUTED\]}" ] && printf "%s%s    %s    %s" "$dark" "$red_bg" "󰍭" "$s2d_reset" && exit 0
+vol="${vol#Volume: }"
+
+split() {
+	# For ommiting the . without calling and external program.
+	IFS=$2
+	set -- $1
+	printf '%s' "$@"
+}
+
+vol="$(printf "%3.0f" "$(split "$vol" ".")")"
+
+case 1 in
+	$((vol >= 1)) ) icon="󰍬" ;;
+	* ) printf "%s%s    %s    %s" "$dark" "$red_bg" "󰍭" "$s2d_reset" && exit 0 ;;
+esac
+
+printf "%s%s  %s %s" "$dark_bg" "$accent" "$icon $vol%" "$s2d_reset" && exit 0

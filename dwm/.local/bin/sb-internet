@@ -2,34 +2,36 @@
 
 source sb-status2d
 
-# Show wifi 📶 and percent strength or 📡 if none.
-# Show 🌐 if connected to ethernet or ❎ if none.
-# Show 🔒 if a vpn connection is active
-
 case $BLOCK_BUTTON in
-	1) "$TERMINAL" -e nmtui; pkill -RTMIN+4 dwmblocks ;;
-	3) notify-send "🌐 Internet module" "\- Click to connect
-❌: wifi disabled
-📡: no wifi connection
-📶: wifi connection with quality
-❎: no ethernet
-🌐: ethernet working
-🔒: vpn is active
+	1) "$TERMINAL" -o 'colors.normal.blue="#24304a"' -e nmtui; pkill -RTMIN+4 dwmblocks ;;
+	3) notify-send " Internet module" "\- Click to connect
+󰤮: wifi disabled
+󰤯  no wifi connection
+󰤥: wifi connection with quality
+󰌙: no ethernet
+󰈀: ethernet working
+󰍁: vpn is active
 " ;;
 	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
 # Wifi
 if [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'up' ] ; then
-	wifiicon="$(awk '/^\s*w/ { print "📶", int($3 * 100 / 70) "% " }' /proc/net/wireless)"
+        percentage=$(grep "^\s*w" /proc/net/wireless | awk '{ print "", int($3 * 100 / 70)}'| xargs)
+        case $percentage in
+                0)                              wifiicon="󰤟" ;;
+                100|9[0-9]|8[0-9]|7[0-9])       wifiicon="󰤢" ;;
+                6[0-9]|5[0-9]|4[0-9]|3[0-9])    wifiicon="󰤥" ;;
+		2[0-9]|1[0-9]|[0-9])            wifiicon="󰤨" ;;
+        esac
 elif [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'down' ] ; then
-	[ "$(cat /sys/class/net/w*/flags 2>/dev/null)" = '0x1003' ] && wifiicon="📡 " || wifiicon="❌ "
+	[ "$(cat /sys/class/net/w*/flags 2>/dev/null)" = '0x1003' ] && wifiicon="󰤯" || wifiicon="󰤮"
 fi
 
 # Ethernet
-[ "$(cat /sys/class/net/e*/operstate 2>/dev/null)" = 'up' ] && ethericon="🌐" || ethericon="❎"
+[ "$(cat /sys/class/net/e*/operstate 2>/dev/null)" = 'up' ] && ethericon="󰈀" || ethericon="󰌙"
 
 # TUN
-[ -n "$(cat /sys/class/net/tun*/operstate 2>/dev/null)" ] && tunicon=" 🔒"
+[ -n "$(cat /sys/class/net/tun*/operstate 2>/dev/null)" ] && tunicon="󰍁"
 
-printf "%s %s%s%s %s" "$red_bg" "$wifiicon" "$ethericon" "$tunicon" "$s2d_reset" && exit 0
+printf "%s %s%s %s %s" "$dark_bg" "$wifiicon" "$ethericon" "$tunicon" "$s2d_reset" && exit 0

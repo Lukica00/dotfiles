@@ -1,0 +1,31 @@
+#!/bin/sh
+
+source sb-status2d
+
+options="poweroff
+reboot
+kill dwm
+suspend
+hibernate
+hybrid-sleep
+suspend-then-hibernate"
+yesno="No
+Yes"
+
+printf "%s%s %s %s" "$dark_bg" "$accent" "󰐥" "$s2d_reset"
+
+case $BLOCK_BUTTON in
+	1) choice="$(echo "$options" | dmenu -p 'Power options:')"
+	[ $choice ] && yn="$(echo "$yesno" | dmenu -p 'Are you sure:')"
+	if [ "$yn" = "Yes" ]; then
+		if [ "$choice" = "kill dwm" ]; then
+			pkill dwm
+		else
+			systemctl $choice
+		fi
+	fi;;
+	3) notify-send "󰐥 Power module" "\- Left click for power options." ;;
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+exit 0

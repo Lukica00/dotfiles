@@ -14,3 +14,7 @@ Git config
 Neovim
 Deps: git, make, unzip, gcc, ripgrep, nerdfont?
 
+## Dwm
+
+# dwmblocks
+Komanda ne sme da bude duza od 50 karaktera, pazi sa status2d

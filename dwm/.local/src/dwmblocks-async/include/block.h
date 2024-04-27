@@ -12,6 +12,7 @@ typedef struct {
     const char *const command;
     const unsigned int interval;
     const int signal;
+    const int position; // 0 top, 1 bottom left, 2 bottom right
 
     int pipe[PIPE_FD_COUNT];
     char output[MAX_BLOCK_OUTPUT_LENGTH * UTF8_MAX_BYTE_COUNT + 1];
@@ -19,7 +20,7 @@ typedef struct {
 } block;
 
 block block_new(const char *const command, const unsigned int interval,
-                const int signal);
+                const int signal, const int bottom);
 int block_init(block *const block);
 int block_deinit(block *const block);
 int block_execute(block *const block, const uint8_t button);

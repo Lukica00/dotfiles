@@ -1,8 +1,5 @@
 #!/bin/sh
 # Description: Metadata for status2d stuff
-TERMINAL=alacritty
-EDITOR=nvim
-STATUSBAR=dwmblocks
 
 # enable/disable status2d output in other scripts
 enable_status2d=true

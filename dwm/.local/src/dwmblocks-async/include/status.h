@@ -14,7 +14,7 @@ typedef struct {
     ((BLOCK_COUNT * (MEMBER_LENGTH(block, output) - 1) + CLICKABLE_BLOCKS) + \
      (BLOCK_COUNT - 1 + LEADING_DELIMITER + TRAILING_DELIMITER) *            \
          (LEN(DELIMITER) - 1) +                                              \
-     1)
+     1+2)
     char current[STATUS_LENGTH];
     char previous[STATUS_LENGTH];
 #undef STATUS_LENGTH

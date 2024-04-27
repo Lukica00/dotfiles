@@ -2,24 +2,26 @@
 
 source sb-status2d
 
-# Prints the current volume or 🔇 if muted.
+# Prints the current volume or 󰖁 if muted.
 
 case $BLOCK_BUTTON in
-	1) setsid -w -f "$TERMINAL" -e pulsemixer; pkill -RTMIN+41 "${STATUSBAR}" ;;
+	1) setsid -w -f "$TERMINAL" -e pulsemixer; pkill -40 "${STATUSBAR}" ;;
 	2) wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle ;;
-	4) wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+ ;;
-	5) wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%- ;;
-	3) notify-send "📢 Volume module" "\- Shows volume 🔊, 🔇 if muted.
+	4) wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ ;;
+	5) wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- ;;
+	3) notify-send "󰕾 Volume module" "\- Shows volume 󰕾, 󰖁 if muted.
 - Left click to open mixer.
 - Right click to mute.
-- Scroll to change." ;;
+- Scroll to change by 5%. Mod scroll for 1%" ;;
 	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+	9) wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+ ;;
+	10) wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%- ;;
 esac
 
 vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
 
-# If muted, print 🔇 and exit.
-[ "$vol" != "${vol%\[MUTED\]}" ] && printf "%s%s   %s   " "$dark" "$red_bg" "🔇" && exit 0
+# If muted, print 󰖁 and exit.
+[ "$vol" != "${vol%\[MUTED\]}" ] && printf "%s%s    %s    %s" "$dark" "$red_bg" "󰖁" "$s2d_reset" && exit 0
 vol="${vol#Volume: }"
 
 split() {
@@ -32,10 +34,10 @@ split() {
 vol="$(printf "%3.0f" "$(split "$vol" ".")")"
 
 case 1 in
-	$((vol >= 70)) ) icon="🔊" ;;
-	$((vol >= 30)) ) icon="🔉" ;;
-	$((vol >= 1)) ) icon="🔈" ;;
-	* ) printf "%s%s   %s   " "$dark" "$red_bg" "🔇" && exit 0 ;;
+	$((vol >= 70)) ) icon="󰕾" ;;
+	$((vol >= 30)) ) icon="󰖀" ;;
+	$((vol >= 1)) ) icon="󰕿" ;;
+	* ) printf "%s%s    %s    %s" "$dark" "$red_bg" "󰖁" "$s2d_reset" && exit 0 ;;
 esac
 
-printf "%s%s %s " "$dark" "$green_bg" "$icon$vol%" && exit 0
+printf "%s%s  %s %s" "$dark_bg" "$accent" "$icon $vol%" "$s2d_reset" && exit 0

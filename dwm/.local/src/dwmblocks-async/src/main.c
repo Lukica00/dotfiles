@@ -128,7 +128,7 @@ int main(const int argc, const char *const argv[]) {
         return 1;
     }
 
-#define BLOCK(command, interval, signal) block_new(command, interval, signal),
+#define BLOCK(command, interval, signal, bottom) block_new(command, interval, signal, bottom),
     block blocks[BLOCK_COUNT] = {BLOCKS(BLOCK)};
 #undef BLOCK
     const unsigned short block_count = LEN(blocks);

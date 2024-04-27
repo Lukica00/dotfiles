@@ -30,35 +30,53 @@ bool status_update(status *const status) {
     (void)strncpy(status->previous, status->current, LEN(status->current));
     status->current[0] = '\0';
 
+    char top[LEN(status->current)] = "\0";
+    char bottom_left[LEN(status->current)] = "\0";
+    char bottom_right[LEN(status->current)] = "\0";
+
     for (unsigned short i = 0; i < status->block_count; ++i) {
         const block *const block = &status->blocks[i];
 
+        const char* current = top;
+        if (block->position == 1)
+            current = bottom_left;
+        else if (block->position == 2)
+            current = bottom_right;
+
         if (strlen(block->output) > 0) {
 #if LEADING_DELIMITER
-            (void)strncat(status->current, DELIMITER, LEN(DELIMITER));
+            (void)strncat(current, DELIMITER, LEN(DELIMITER));
 #else
-            if (status->current[0] != '\0') {
-                (void)strncat(status->current, DELIMITER, LEN(DELIMITER));
+            if (status->current[0] != '\0') { 
+                (void)strncat(current, DELIMITER, LEN(DELIMITER));
             }
 #endif
 
 #if CLICKABLE_BLOCKS
             if (block->signal > 0) {
                 const char signal[] = {(char)block->signal, '\0'};
-                (void)strncat(status->current, signal, LEN(signal));
+                (void)strncat(current, signal, LEN(signal));
             }
 #endif
 
-            (void)strncat(status->current, block->output, LEN(block->output));
+            (void)strncat(current, block->output, LEN(block->output));
         }
     }
 
 #if TRAILING_DELIMITER
-    if (status->current[0] != '\0') {
-        (void)strncat(status->current, DELIMITER, LEN(DELIMITER));
+    if (top != '\0') {
+        (void)strncat(top, DELIMITER, LEN(DELIMITER));
+    }
+    if (bottom != '\0') {
+        (void)strncat(bottom, DELIMITER, LEN(DELIMITER));
     }
 #endif
 
+    (void)strncat(status->current, top, LEN(top));
+    (void)strncat(status->current, ";", LEN(";"));
+    (void)strncat(status->current, bottom_left, LEN(bottom_left));
+    (void)strncat(status->current, ";", LEN(";"));
+    (void)strncat(status->current, bottom_right, LEN(bottom_right));
     return has_status_changed(status);
 }
 

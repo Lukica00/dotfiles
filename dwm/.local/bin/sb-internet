@@ -4,7 +4,7 @@ source sb-status2d
 
 case $BLOCK_BUTTON in
 	1) "$TERMINAL" -o 'colors.normal.blue="#24304a"' -e nmtui; pkill -RTMIN+4 dwmblocks ;;
-	3) notify-send " Internet module" "\- Click to connect
+	3) notify-send " Internet module" "\- Left click to connect.
 󰤮: wifi disabled
 󰤯  no wifi connection
 󰤥: wifi connection with quality

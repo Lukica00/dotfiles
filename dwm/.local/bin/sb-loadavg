@@ -9,9 +9,9 @@ source sb-status2d
 cache=/tmp/cpubarscache
 
 case $BLOCK_BUTTON in
-	2) setsid -f "$TERMINAL" -e htop ;;
-	3) notify-send "🪨 CPU load module" "Each bar represents
-one CPU core";;
+	1) setsid -f "$TERMINAL" -e htop ;;
+	3) notify-send "󰻠 CPU load module" "Each bar represents one CPU core.
+- Left click to open htop.";;
 	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 

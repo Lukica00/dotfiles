@@ -109,8 +109,8 @@ static const Key keys[] = {
 	TAGKEYS(                16,                     6)              // 7
 	TAGKEYS(                17,                     7)              // 8
 	TAGKEYS(                18,                     8)              // 9
-	//{ MODKEY|ShiftMask,     24,     spawn,          SHCMD("BLOCK_BUTTON=1 sb-power") }, // q
-	{ MODKEY|ShiftMask,     24,     quit,          {0} }, // q
+	{ MODKEY|ShiftMask,     24,     spawn,          SHCMD("BLOCK_BUTTON=1 sb-power") }, // q
+	//{ MODKEY|ShiftMask,     24,     quit,          {0} }, // q
 };
 
 /* button definitions */

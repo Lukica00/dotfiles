@@ -1,15 +1,18 @@
 [global]
     follow = mouse
 
-    icon_corner_radius = 9
     icon_corners = all
+    icon_corner_radius = 9
 
-    corner_radius = 9
     corners = all
+    corner_radius = 9
 
+    width= (300,600)
     frame_width = 2
 
     mouse_left_click = do_action, close_current
+    
+    font = 'Noto Sans M Nerd' 11
 
 [urgency_low]
     background = "#16161e"

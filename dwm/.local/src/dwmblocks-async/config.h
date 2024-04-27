@@ -16,11 +16,17 @@
 // Control whether a trailing delimiter should be appended to the status.
 #define TRAILING_DELIMITER 0
 
-// Define blocks for the status feed as X(cmd, interval, signal).
-#define BLOCKS(X)         \
-    X("sb-volume", 0, 7)    \
-    X("sb-kbselect", 0, 8)  \
-    X("sb-internet", 60, 9) \
-    X("sb-date", 1, 10)
+// Define blocks for the status feed as X(cmd, interval, signal, position).
+#define BLOCKS(X)           \
+    X("sb-mic", 0, 6, 0)       \
+    X("sb-volume", 0, 7, 0)    \
+    X("sb-kbselect", 0, 8, 0)  \
+    X("sb-date", 1, 10, 0)     \
+    X("sb-power", 0, 5, 1)     \
+    X("sb-loadavg", 5, 2, 1)   \
+    X("sb-memory", 60, 3, 1)   \
+    X("sb-disk", 300, 4, 1)    \
+    X("sb-nettraf", 5, 1, 2)   \
+    X("sb-internet", 60, 9, 2)
 
 #endif  // CONFIG_H

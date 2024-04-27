@@ -1,0 +1,24 @@
+#!/bin/sh
+# Display disk usage for both `/` and `/home`.
+
+source sb-status2d
+
+case $BLOCK_BUTTON in
+    6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+disk_usage() {
+    used_bytes="$(df --output=avail "$1" | tail -n 1)"
+    used_gibs="$(echo "scale=1; $used_bytes / 1024 / 1024" | bc)"
+
+    percent_used="$(df --output=pcent "$1" | tail -n 1 | grep -o '[[:digit:]]\+')"
+    if [ "$percent_used" -ge 95 ]; then
+        printf "%s%s" "$red" "${used_gibs}G"
+    else
+        printf "%s" "${used_gibs}G"
+    fi
+}
+
+printf "%s%s %s %s %s" "$dark_bg" "$accent" "󰋊" "$(disk_usage "/")" "$s2d_reset"
+#"|" "$(disk_usage "/home")"
+

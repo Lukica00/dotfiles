@@ -1028,7 +1028,7 @@ drawstatusbar(Monitor *m, int bh, int extra, char* stext) {
 void
 drawbar(Monitor *m)
 {
-	int x, w, tw = 0, stw = 0, etwl = 0, etwr = 0;
+	int x, w, tw = 0, stw = 0;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
@@ -1086,10 +1086,6 @@ drawbar(Monitor *m)
 	if (m == selmon) { /* extra status is only drawn on selected monitor */
 		elstatusw = m->ww - drawstatusbar(m, bh, 1, estextl);
 		erstatusw = m->ww - drawstatusbar(m, bh, 2, estextr);
-	//	etwr = TEXTW(estextr) - lrpad + 2; /* 2px right padding */
-	//	drw_text(drw, m->ww - etwr, 0, etwr, bh, 0, estextr, 0);
-	//	etwl = TEXTW(estextl);
-	//	drw_text(drw, 0, 0, etwl, bh, 0, estextl, 0);
 	}
 	drw_map(drw, m->extrabarwin, 0, 0, m->ww, bh);
 }

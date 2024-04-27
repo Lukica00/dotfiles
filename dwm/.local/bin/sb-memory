@@ -4,10 +4,12 @@
 source sb-status2d
 
 case "$BLOCK_BUTTON" in
-    6) terminal -e "$EDITOR" "$0" ;;
+    1) setsid -f "$TERMINAL" -e htop ;;
+    3) notify-send "󰍛 Memory module" "\- Left click to open htop." ;;
+    6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
 free_mib="$(free --mebi | grep '^Mem:' | tr -s ' ' | cut -d' ' -f3)"
 free_gib="$(echo "scale=2; $free_mib / 1024" | bc)"
 
-printf "%s%s %s %s %s" "$dark_bg" "$accent" "󰍛" "$(printf "%.2f" "$free_gib")G" "$s2d_reset" && exit 0
+printf "%s%s %s %sG %s" "$dark_bg" "$accent" "󰍛" "$free_gib" "$s2d_reset" && exit 0

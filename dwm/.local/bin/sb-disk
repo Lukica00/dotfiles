@@ -4,6 +4,7 @@
 source sb-status2d
 
 case $BLOCK_BUTTON in
+    3) notify-send "󰋊 Free storage module" ;;
     6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 

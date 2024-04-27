@@ -12,7 +12,7 @@ case $BLOCK_BUTTON in
 	3) notify-send "󰕾 Volume module" "\- Shows volume 󰕾, 󰖁 if muted.
 - Left click to open mixer.
 - Right click to mute.
-- Scroll to change by 5%. Mod scroll for 1%" ;;
+- Scroll to change by 5%. Mod scroll for 1%." ;;
 	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 	9) wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+ ;;
 	10) wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%- ;;

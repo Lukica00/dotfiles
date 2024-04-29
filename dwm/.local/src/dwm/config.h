@@ -5,7 +5,7 @@ static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const Gap default_gap        = {.isgap = 1, .realgap = 10, .gappx = 10};
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayonleft  = 0;   /* 0: systray in the right corner, >0: systray on left of status text */
+static const unsigned int systrayonleft  = 1;   /* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 10;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;        /* 0 means no systray */
@@ -13,7 +13,7 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int extrabar	    = 0;	/* 0 means no extra bar */
 static const char statussep	    = ';';	/* separator between status bars */
-static const char *fonts[]          = { "Noto Sans M Nerd Font:size=11" };
+static const char *fonts[]          = { "Noto Sans M Nerd Font:size=12" };
 
 static const char dark[]    = "#1a1b26";
 static const char light[]   = "#a9b1d6";
@@ -111,6 +111,7 @@ static const Key keys[] = {
 	TAGKEYS(                18,                     8)              // 9
 	{ MODKEY|ShiftMask,     24,     spawn,          SHCMD("BLOCK_BUTTON=1 sb-power") }, // q
 	//{ MODKEY|ShiftMask,     24,     quit,          {0} }, // q
+	{ MODKEY|ControlMask|ShiftMask, 24,	quit,    {1} }, // q
 };
 
 /* button definitions */

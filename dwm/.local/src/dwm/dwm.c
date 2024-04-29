@@ -248,6 +248,8 @@ static void setup(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void sigstatusbar(const Arg *arg);
+static void sighup(int unused);
+static void sigterm(int unused);
 static void spawn(const Arg *arg);
 static Monitor *systraytomon(Monitor *m);
 static void tag(const Arg *arg);
@@ -318,6 +320,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[UnmapNotify] = unmapnotify
 };
 static Atom wmatom[WMLast], netatom[NetLast], xatom[XLast];
+static int restart = 0;
 static int running = 1;
 static Cur *cursor[CurLast];
 static Clr **scheme;
@@ -490,6 +493,7 @@ buttonpress(XEvent *e)
 		focus(NULL);
 	}
 	if (ev->window == selmon->barwin) {
+		int stw = showsystray && m == systraytomon(m) && !systrayonleft ? getsystraywidth() : 0;
 		i = x = 0;
 		do
 			x += TEXTW(tags[i]);
@@ -499,8 +503,8 @@ buttonpress(XEvent *e)
 			arg.ui = 1 << i;
 		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
 			click = ClkLtSymbol;
-		else if (ev->x > selmon->ww - statusw - getsystraywidth()) {
-			x = selmon->ww - statusw - getsystraywidth();
+		else if (ev->x > selmon->ww - statusw - stw) {
+			x = selmon->ww - statusw - stw;
 			click = ClkStatusText;
 		
 			char *text, *s, ch;
@@ -699,6 +703,8 @@ clientmessage(XEvent *e)
 			updatesizehints(c);
 			updatesystrayicongeom(c, wa.width, wa.height);
 			XAddToSaveSet(dpy, c->win);
+			XClassHint ch = {"dwmsystray", "dwmsystray"};
+			XSetClassHint(dpy, c->win, &ch);
 			XSelectInput(dpy, c->win, StructureNotifyMask | PropertyChangeMask | ResizeRedirectMask);
 			XReparentWindow(dpy, c->win, systray->win, 0, 0);
 			/* use parents background color */
@@ -953,7 +959,8 @@ drawstatusbar(Monitor *m, int bh, int extra, char* stext) {
 		x = m->ww - w;
 	} else {
 		w += 0; /* no padding on both sides */
-		x = m->ww - w - getsystraywidth();
+		int stw = showsystray && m == systraytomon(m) && !systrayonleft ? getsystraywidth() : 0;
+		x = m->ww - w - stw;
 	}
 
 	ret = m->ww - w;
@@ -1041,10 +1048,10 @@ drawbar(Monitor *m)
 		stw = getsystraywidth();
 
 	/* draw status first so it can be overdrawn by tags later */
-	if (m == selmon) { /* status is only drawn on selected monitor */
+	//if (m == selmon) { /* status is only drawn on selected monitor */
 		tw = statusw = m->ww - 1 - drawstatusbar(m, bh, 0, stext);
 		/* dodao sam minu 1 jer bio gap*/
-	}
+	//}
 
 	resizebarwin(m);
 	for (c = m->clients; c; c = c->next) {
@@ -1083,10 +1090,10 @@ drawbar(Monitor *m)
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	/* clear default bar draw buffer by drawing a blank rectangle */
 	drw_rect(drw, 0, 0, m->ww, bh, 1, 1);
-	if (m == selmon) { /* extra status is only drawn on selected monitor */
+	//if (m == selmon) { /* extra status is only drawn on selected monitor */
 		elstatusw = m->ww - drawstatusbar(m, bh, 1, estextl);
 		erstatusw = m->ww - drawstatusbar(m, bh, 2, estextr);
-	}
+	//}
 	drw_map(drw, m->extrabarwin, 0, 0, m->ww, bh);
 }
 
@@ -1094,9 +1101,9 @@ void
 drawbars(void)
 {
 	Monitor *m;
-
 	for (m = mons; m; m = m->next)
 		drawbar(m);
+	updatesystray();
 }
 
 void
@@ -1619,7 +1626,7 @@ propertynotify(XEvent *e)
 		updatesystray();
 	}
 
-    if ((ev->window == root) && (ev->atom == XA_WM_NAME))
+	if ((ev->window == root) && (ev->atom == XA_WM_NAME))
 		updatestatus();
 	else if (ev->state == PropertyDelete)
 		return; /* ignore */
@@ -1652,6 +1659,7 @@ propertynotify(XEvent *e)
 void
 quit(const Arg *arg)
 {
+	if(arg->i) restart = 1;
 	running = 0;
 }
 
@@ -1695,7 +1703,7 @@ resizebarwin(Monitor *m) {
 	if (showsystray && m == systraytomon(m) && !systrayonleft)
 		w -= getsystraywidth();
 	XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, w, bh);
-	XMoveResizeWindow(dpy, m->extrabarwin, m->wx, m->eby, m->ww, bh); //ovde obicno ww jer nema status
+	XMoveResizeWindow(dpy, m->extrabarwin, m->wx, m->eby, m->ww, bh); //ovde obicno ww jer nema systray
 }
 
 void
@@ -2022,6 +2030,9 @@ setup(void)
 	/* clean up any zombies (inherited from .xinitrc etc) immediately */
 	while (waitpid(-1, NULL, WNOHANG) > 0);
 
+	signal(SIGHUP, sighup);
+	signal(SIGTERM, sigterm);
+
 	/* init screen */
 	screen = DefaultScreen(dpy);
 	sw = DisplayWidth(dpy, screen);
@@ -2135,6 +2146,20 @@ sigstatusbar(const Arg *arg)
 		return;
 
 	sigqueue(statuspid, SIGRTMIN+statussig, sv);
+}
+
+void
+sighup(int unused)
+{
+	Arg a = {.i = 1};
+	quit(&a);
+}
+
+void
+sigterm(int unused)
+{
+	Arg a = {.i = 0};
+	quit(&a);
 }
 
 void
@@ -2568,7 +2593,9 @@ updatestatus(void)
 			estextr[0] = '\0';
 		}
 	}
-	drawbar(selmon);
+	Monitor* m;
+	for(m = mons; m; m = m->next)
+		drawbar(m);
 	updatesystray();
 }
 
@@ -2632,7 +2659,7 @@ updatesystray(void)
 	Client *i;
 	Monitor *m = systraytomon(NULL);
 	unsigned int x = m->mx + m->mw;
-	unsigned int sw = TEXTW(stext) - lrpad + systrayspacing;
+	unsigned int sw = statusw - lrpad + systrayspacing;
 	unsigned int w = 1;
 
 	if (!showsystray)
@@ -2865,6 +2892,7 @@ main(int argc, char *argv[])
 #endif /* __OpenBSD__ */
 	scan();
 	run();
+	if(restart) execvp(argv[0], argv);
 	cleanup();
 	XCloseDisplay(dpy);
 	return EXIT_SUCCESS;

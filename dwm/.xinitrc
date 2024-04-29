@@ -3,5 +3,5 @@ feh --bg-scale ~/Pictures/Desktop1.jpg &
 picom &
 dunst &
 dwmblocks &
-exec startdwm
+exec dwm
 

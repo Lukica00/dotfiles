@@ -3,9 +3,10 @@
 source sb-status2d
 
 options="poweroff
-reboot
-kill dwm
 suspend
+reboot
+restart dwm
+kill dwm
 hibernate
 hybrid-sleep
 suspend-then-hibernate"
@@ -19,8 +20,9 @@ case $BLOCK_BUTTON in
 	[ "$choice" ] && yn="$(echo "$yesno" | dmenu -p 'Are you sure:')"
 	if [ "$yn" = "Yes" ]; then
 		if [ "$choice" = "kill dwm" ]; then
-			printf "ALO"
-			pkill dwm
+			pkill -SIGTERM dwm
+		elif [ "$choice" = "restart dwm" ]; then
+			pkill -SIGHUP dwm
 		else
 			systemctl $choice
 		fi

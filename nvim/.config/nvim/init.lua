@@ -20,7 +20,7 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = "a"
@@ -471,7 +471,6 @@ require("lazy").setup({
 				--
 				-- But for many setups, the LSP (`tsserver`) will work just fine
 				tsserver = {},
-				--
 
 				lua_ls = {
 					-- cmd = {...},
@@ -552,7 +551,8 @@ require("lazy").setup({
 				--
 				-- You can use a sub-list to tell conform to run *until* a formatter
 				-- is found.
-				-- javascript = { { "prettierd", "prettier" } },
+				javascript = { { "prettierd", "prettier" } },
+				typescript = { { "prettierd", "prettier" } },
 			},
 		},
 	},
@@ -657,9 +657,9 @@ require("lazy").setup({
 				sources = {
 					{
 						name = "nvim_lsp",
-						entry_filter = function(entry)
-							return require("cmp").lsp.CompletionItemKind.Snippet ~= entry:get_kind()
-						end,
+						--	entry_filter = function(entry)
+						--			return require("cmp").lsp.CompletionItemKind.Snippet ~= entry:get_kind()
+						--	end,
 					},
 					{ name = "luasnip" },
 					{ name = "path" },
@@ -777,7 +777,7 @@ require("lazy").setup({
 	--
 	-- require 'kickstart.plugins.debug',
 	-- require 'kickstart.plugins.indent_line',
-	-- require 'kickstart.plugins.lint',
+	require("plugins.lint"),
 
 	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
 	--    This is the easiest way to modularize your config.

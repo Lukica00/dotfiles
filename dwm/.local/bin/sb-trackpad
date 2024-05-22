@@ -1,0 +1,25 @@
+#!/bin/sh
+
+source sb-status2d
+
+declare -i ID
+ID=$(xinput list | grep -Eio '(touchpad|glidepoint)\s*id=[0-9]{1,2}' | grep -Eo '[0-9]{1,2}')
+declare -i STATE
+STATE=$(xinput list-props "$ID" | grep 'Device Enabled' | awk '{print $4}')
+if [ "$STATE" -eq 1 ]; then
+    icon="󰟸"
+else
+    icon="󰤳"
+fi
+
+case $BLOCK_BUTTON in
+	1) if [ "$STATE" -eq 1 ]; then
+                xinput disable "$ID" && icon="󰤳"
+            else
+                xinput enable "$ID" && icon="󰟸"
+            fi ;;
+	3) notify-send "󰟸  Trackpad module" "\- Click to toggle trackbar state." ;;
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+    esac
+
+printf "%s%s %s %s" "$dark_bg" "$accent" "$icon" "$s2d_reset" && exit 0

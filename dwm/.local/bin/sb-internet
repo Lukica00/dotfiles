@@ -6,13 +6,15 @@ case $BLOCK_BUTTON in
 	1) "$TERMINAL" -o 'colors.normal.blue="#24304a"' -e nmtui; pkill -RTMIN+4 dwmblocks ;;
 	3) notify-send " Internet module" "\- Left click to connect.
 󰤮: wifi disabled
-󰤯  no wifi connection
+󰤫: no wifi connection
 󰤥: wifi connection with quality
 󰌙: no ethernet
 󰈀: ethernet working
 󰍁: vpn is active
 " ;;
 	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+        20) rfkill toggle wlan
+                rfkill toggle bluetooth
 esac
 
 # Wifi
@@ -25,7 +27,7 @@ if [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'up' ] ; then
 		2[0-9]|1[0-9]|[0-9])            wifiicon="󰤨" ;;
         esac
 elif [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'down' ] ; then
-	[ "$(cat /sys/class/net/w*/flags 2>/dev/null)" = '0x1003' ] && wifiicon="󰤯" || wifiicon="󰤮"
+	[ "$(cat /sys/class/net/w*/flags 2>/dev/null)" = '0x1003' ] && wifiicon="󰤫" || wifiicon="󰤮"
 fi
 
 # Ethernet
@@ -34,4 +36,4 @@ fi
 # TUN
 [ -n "$(cat /sys/class/net/tun*/operstate 2>/dev/null)" ] && tunicon="󰍁"
 
-printf "%s %s%s %s %s" "$dark_bg" "$wifiicon" "$ethericon" "$tunicon" "$s2d_reset" && exit 0
+printf "%s %s %s %s %s" "$dark_bg" "$wifiicon" "$ethericon" "$tunicon" "$s2d_reset" && exit 0

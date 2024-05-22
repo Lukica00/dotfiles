@@ -17,16 +17,18 @@
 #define TRAILING_DELIMITER 0
 
 // Define blocks for the status feed as X(cmd, interval, signal, position).
-#define BLOCKS(X)           \
-    X("sb-mic", 0, 6, 0)       \
-    X("sb-volume", 0, 7, 0)    \
-    X("sb-kbselect", 0, 8, 0)  \
-    X("sb-date", 1, 10, 0)     \
-    X("sb-power", 0, 5, 1)     \
-    X("sb-loadavg", 5, 2, 1)   \
-    X("sb-memory", 60, 3, 1)   \
-    X("sb-disk", 300, 4, 1)    \
-    X("sb-nettraf", 5, 1, 2)   \
+#define BLOCKS(X)               \
+    X("sb-mic", 0, 6, 0)        \
+    X("sb-volume", 0, 7, 0)     \
+    X("sb-kbselect", 0, 8, 0)   \
+    X("sb-date", 1, 10, 0)      \
+    X("sb-power", 0, 5, 1)      \
+    X("sb-loadavg", 5, 2, 1)    \
+    X("sb-memory", 60, 3, 1)    \
+    X("sb-disk", 300, 4, 1)     \
+    X("sb-trackpad", 0, 12, 2)  \
+    X("sb-brightness", 0, 11, 2)\
+    X("sb-nettraf", 5, 1, 2)    \
     X("sb-internet", 60, 9, 2)
 
 #endif  // CONFIG_H

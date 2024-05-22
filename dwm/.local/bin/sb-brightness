@@ -3,6 +3,9 @@
 source sb-status2d
 
 # Prints the current brightness level if availible.
+if [ ! -d "/sys/class/backlight/intel_backlight" ]; then
+	exit 0
+fi
 max=$(< /sys/class/backlight/intel_backlight/max_brightness)
 cent=$(echo "scale=2; $max / 100" | bc)
 old=$(< /sys/class/backlight/intel_backlight/brightness)

@@ -65,6 +65,9 @@ static const Layout layouts[] = {
 
 #define STATUSBAR "dwmblocks"
 
+/* helper for doing statusbar action, signal is 34+signal value in dwmblocks config.h */
+#define BLKCMD(cmd, action, signal) SHCMD("BLOCK_BUTTON=" #action " " #cmd " && pkill -" #signal " " STATUSBAR)
+
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-p", "Start:", NULL };
@@ -100,7 +103,17 @@ static const Key keys[] = {
 	{ MODKEY,               21,	setgaps,        {.i = +5 } },	// equals
 	{ MODKEY|ShiftMask,     20,	setgaps,        {.i = GAP_RESET } }, // minus
 	{ MODKEY|ShiftMask,	21,	setgaps,        {.i = GAP_TOGGLE} }, // equals
-	{ MODKEY|ControlMask,	65,	spawn,		SHCMD("cycle-keyboard") },
+	{ MODKEY|ControlMask,	65,	spawn,		BLKCMD(sb-kbselect, 4, 42) }, //space
+	{ 0,			121,	spawn,		BLKCMD(sb-volume, 2, 41) },	//volume-mute
+	{ 0,			122,	spawn,		BLKCMD(sb-volume, 5, 41) },	//volume-down
+	{ 0,			123,	spawn,		BLKCMD(sb-volume, 4, 41) },	//volume-up
+	{ 0,			232,	spawn,		BLKCMD(sb-brightness, 5, 45) },	//brightness-down
+	{ 0,			233,	spawn,		BLKCMD(sb-brightness, 4, 45) },	//brightness-up
+	{ MODKEY,		232,	spawn,		BLKCMD(sb-brightness, 10, 45) },//brightness-down
+	{ MODKEY,		233,	spawn,		BLKCMD(sb-brightness, 9, 45) },	//brightness-up
+	{ 0,			255,	spawn,		BLKCMD(sb-internet, 20, 43) },	//airplane
+	{ 0,			200,	spawn,		BLKCMD(sb-trackpad, 1, 46) },	//trackpad on/off ima dva kljuca
+	{ 0,			201,	spawn,		BLKCMD(sb-trackpad, 1, 46) },	//trackpad on/off ima dva kljuca
 	TAGKEYS(                10,                     0)              // 1
 	TAGKEYS(                11,                     1)              // 2
 	TAGKEYS(                12,                     2)              // 3
@@ -110,7 +123,7 @@ static const Key keys[] = {
 	TAGKEYS(                16,                     6)              // 7
 	TAGKEYS(                17,                     7)              // 8
 	TAGKEYS(                18,                     8)              // 9
-	{ MODKEY|ShiftMask,     24,     spawn,          SHCMD("BLOCK_BUTTON=1 sb-power") }, // q
+	{ MODKEY|ShiftMask,     24,     spawn,          BLKCMD(sb-power, 1, 39) }, // q
 	//{ MODKEY|ShiftMask,     24,     quit,          {0} }, // q
 	{ MODKEY|ControlMask|ShiftMask, 24,	quit,    {1} }, // q
 };

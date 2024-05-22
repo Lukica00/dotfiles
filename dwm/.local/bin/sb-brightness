@@ -1,0 +1,29 @@
+#!/bin/sh
+
+source sb-status2d
+
+# Prints the current brightness level if availible.
+max=$(< /sys/class/backlight/intel_backlight/max_brightness)
+cent=$(echo "scale=2; $max / 100" | bc)
+old=$(< /sys/class/backlight/intel_backlight/brightness)
+val=$old
+change () {
+	val=$(echo "scale=0; ($old + $1 * $cent) / 1" | bc)
+	if (( $val < 1 )) then
+		val=1
+	fi
+	if (( $val > $max )); then
+		val=$max
+	fi
+	echo $val > /sys/class/backlight/intel_backlight/brightness
+}
+case $BLOCK_BUTTON in
+	4) change 10 ;;
+	5) change -10 ;;
+	9) change 2 ;;
+	10) change -2 ;;
+	3) notify-send "󰳲 Brightness module" "\- Scroll to change by 10%. Mod scroll for 2%" ;;
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+perc=$(echo "scale=0; 100 * $val / $max" | bc)
+printf "%s%s %s %s" "$dark_bg" "$accent" "󰳲 $perc%" "$s2d_reset" && exit 0

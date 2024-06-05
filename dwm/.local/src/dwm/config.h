@@ -34,7 +34,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "discord",  NULL,       NULL,           1<<1,         0,           1  },
+	{ "discord",  NULL,       NULL,           1<<8,         0,           1  },
 	{ "steam",    NULL,       NULL,           1<<6,         0,           1  },
 	{ "steam",    NULL,       "Friends List", 1<<6,         1,           1  },
 };
@@ -72,11 +72,13 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-p", "Start:", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
+static const char *firefoxcmd[]  = { "firefox", NULL };
 
 static const Key keys[] = {
 	/* modifier             key     function        argument */
 	{ MODKEY,               33,     spawn,          {.v = dmenucmd } }, // p
 	{ MODKEY|ShiftMask,     36,     spawn,          {.v = termcmd } }, // Return
+	{ MODKEY|ShiftMask,	41,     spawn,          {.v = firefoxcmd } }, // f
 	{ MODKEY,               56,     togglebar,      {0} },          // b
 	{ MODKEY|ShiftMask,     56,     toggleextrabar, {0} },          // b
 	{ MODKEY,               44,     focusstack,     {.i = +1 } },   // j
@@ -171,6 +173,8 @@ static const Button buttons[] = {
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
+	{ ClkTagBar,            0,              Button4,        viewscroll,     {1} }, // skrol gore
+	{ ClkTagBar,            0,              Button5,        viewscroll,     {0} }, // skrol dole
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };

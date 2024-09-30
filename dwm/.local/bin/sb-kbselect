@@ -2,39 +2,11 @@
 
 source sb-status2d
 
-path=~/.config/.keyboard-layouts
-query=$(setxkbmap -query)
-
-currentLayout="$(echo $query | grep -oP 'layout:\s*\K\w+')"
-currentVariant="$(echo $query | grep -oP 'variant:\s*\K\w+')"
-[ $currentVariant ] && currentLayout="$currentLayout $currentVariant"
-
-kb=$(grep "$currentLayout$" -m 1 $path | awk '{print $1}')
-
 case $BLOCK_BUTTON in
-	1) kb_choice="$(awk '{print $1}' $path | dmenu -p "Choose language:")"
-	[ "$kb_choice" ] && kb=$kb_choice
-	setxkbmap $(grep $kb -m 1 $path | awk '{if($3!="") printf "-layout %s -variant %s",$2,$3; else print $2}') ;;
-	3) notify-send "󰥻  Keyboard/language module" "$(printf "%s" "\- Current layout: $currentLayout").
-- Left click to choose keyboard.
-- Scroll to change keyboard.";;
-	4) linija=$(sed "$(($(grep -n "$currentLayout$" -m 1 $path | cut -d : -f 1)+1))q;d" $path)
-	[ -z "$linija" ] && linija=$(head -n 1 $path)
-	[ -z "$linija" ] && exit 1
-	kb=$(echo $linija | awk '{print $1}')
-	setxkbmap $(echo $linija | awk '{if($3!="") printf "-layout %s -variant %s",$2,$3; else print $2}') ;;
-	5) br=$(grep -n "$currentLayout$" -m 1 $path | cut -d : -f 1)
-	if [ "$br" -eq 1 ]; then
-		linija=$(tail -n 1 $path)
-	else
-		linija=$(sed "$(($br-1))q;d" $path)
-		[ -z "$linija" ] && linija=$(head -n 1 $path)
-	fi
-	[ -z "$linija" ] && exit 1
-	kb=$(echo $linija | awk '{print $1}')
-	setxkbmap $(echo $linija | awk '{if($3!="") printf "-layout %s -variant %s",$2,$3; else print $2}') ;;
-	
+	3) notify-send "󰌌 Current keyboard layout" "\- Layouts us, rs, uk, срб.
+- Left Alt+Shift to cycle through layouts." ;;
 	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
+kb=$(</tmp/current_kb_layout.txt)
 printf "%s%s %s %s" "$dark_bg" "$accent" "$kb" "$s2d_reset" && exit 0

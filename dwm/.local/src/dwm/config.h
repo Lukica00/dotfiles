@@ -33,10 +33,10 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "discord",  NULL,       NULL,           1<<8,         0,           1  },
-	{ "steam",    NULL,       NULL,           1<<6,         0,           1  },
-	{ "steam",    NULL,       "Friends List", 1<<6,         1,           1  },
+	/* class      instance    title       tags mask     isfloating   monitor  xkb_layout */
+	{ "discord",  NULL,       NULL,           1<<8,         0,           1,       -1  },
+	{ "steam",    NULL,       NULL,           1<<6,         0,           1,       -1  },
+	{ "steam",    NULL,       "Friends List", 1<<6,         1,           1,       -1  },
 };
 
 /* layout(s) */
@@ -73,6 +73,9 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-p", "Start:", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *firefoxcmd[]  = { "firefox", NULL };
+static const char *slockcmd[]  = { "slock", NULL };
+static char selectedKeyboardLayout[2] = "0"; /* sluzi za notifyKeyboardChange menja se u dwm.c */
+static const char *notifyKeyboardChange[] = { "write-current-kb", selectedKeyboardLayout, NULL };
 
 static const Key keys[] = {
 	/* modifier             key     function        argument */
@@ -95,6 +98,7 @@ static const Key keys[] = {
 	{ MODKEY,               58,     setlayout,      {.v = &layouts[2]} }, // m
 	{ MODKEY,               65,     setlayout,      {0} },          // space
 	{ MODKEY|ShiftMask,     65,     togglefloating, {0} },          // space
+	{ MODKEY,		 9,     spawn,          {.v = slockcmd } }, // esc
 	{ MODKEY,               19,     view,           {.ui = ~0 } },  // 0
 	{ MODKEY|ShiftMask,     19,     tag,            {.ui = ~0 } },  // 0
 	{ MODKEY,               59,     focusmon,       {.i = -1 } },   // comma
@@ -105,10 +109,12 @@ static const Key keys[] = {
 	{ MODKEY,               21,	setgaps,        {.i = +5 } },	// equals
 	{ MODKEY|ShiftMask,     20,	setgaps,        {.i = GAP_RESET } }, // minus
 	{ MODKEY|ShiftMask,	21,	setgaps,        {.i = GAP_TOGGLE} }, // equals
-	{ MODKEY|ControlMask,	65,	spawn,		BLKCMD(sb-kbselect, 4, 42) }, //space
 	{ 0,			121,	spawn,		BLKCMD(sb-volume, 2, 41) },	//volume-mute
+	{ MODKEY,		121,	spawn,		BLKCMD(sb-mic, 2, 40) },	//mic-mute
 	{ 0,			122,	spawn,		BLKCMD(sb-volume, 5, 41) },	//volume-down
+	{ MODKEY,		122,	spawn,		BLKCMD(sb-mic, 5, 40) },	//mic-down
 	{ 0,			123,	spawn,		BLKCMD(sb-volume, 4, 41) },	//volume-up
+	{ MODKEY,		123,	spawn,		BLKCMD(sb-mic, 4, 40) },	//mic-up
 	{ 0,			232,	spawn,		BLKCMD(sb-brightness, 5, 45) },	//brightness-down
 	{ 0,			233,	spawn,		BLKCMD(sb-brightness, 4, 45) },	//brightness-up
 	{ MODKEY,		232,	spawn,		BLKCMD(sb-brightness, 10, 45) },//brightness-down
@@ -126,8 +132,7 @@ static const Key keys[] = {
 	TAGKEYS(                17,                     7)              // 8
 	TAGKEYS(                18,                     8)              // 9
 	{ MODKEY|ShiftMask,     24,     spawn,          BLKCMD(sb-power, 1, 39) }, // q
-	//{ MODKEY|ShiftMask,     24,     quit,          {0} }, // q
-	{ MODKEY|ControlMask|ShiftMask, 24,	quit,    {1} }, // q
+	{ MODKEY|ControlMask|ShiftMask, 24,	quit,    {1} }, // q restart dwn
 };
 
 /* button definitions */

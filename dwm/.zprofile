@@ -5,5 +5,5 @@ export VISUAL=$EDITOR
 export PATH=$PATH:$HOME/.local/bin
 
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-	startx
+	exec startx
 fi

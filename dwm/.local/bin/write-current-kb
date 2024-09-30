@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# setxkbmap -layout "us,rs,gb,rs" -variant ",latin,," -option "grp:alt_shift_toggle"
+case $1 in
+	0) layout_name="us"  ;;
+	1) layout_name="rs"  ;;
+	2) layout_name="uk"  ;;
+	3) layout_name="срб" ;;
+esac
+
+echo $layout_name > /tmp/current_kb_layout.txt
+pkill -42 "${STATUSBAR}" 

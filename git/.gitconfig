@@ -3,3 +3,5 @@
 	name = Luka Lazarević
 [diff]
 	tool = nvimdiff
+[core]
+	autocrlf = input

@@ -122,6 +122,7 @@ static const Key keys[] = {
 	{ 0,			255,	spawn,		BLKCMD(sb-internet, 20, 43) },	//airplane
 	{ 0,			200,	spawn,		BLKCMD(sb-trackpad, 1, 46) },	//trackpad on/off ima dva kljuca
 	{ 0,			201,	spawn,		BLKCMD(sb-trackpad, 1, 46) },	//trackpad on/off ima dva kljuca
+	{ 0,			107,	spawn,		SHCMD("maim -s | xclip -selection clipboard -t image/png") },	//print screen
 	TAGKEYS(                10,                     0)              // 1
 	TAGKEYS(                11,                     1)              // 2
 	TAGKEYS(                12,                     2)              // 3

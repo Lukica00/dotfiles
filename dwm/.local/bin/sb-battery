@@ -1,0 +1,49 @@
+#!/bin/sh
+# Display battery percentage left
+
+source sb-status2d
+
+case $BLOCK_BUTTON in
+    3) notify-send "󰁹 Battery left" ;;
+    6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+battery=$(cat /sys/class/power_supply/BAT0/capacity)
+status=$(cat /sys/class/power_supply/BAT0/status)
+
+if [ "$status" = "Full" ]; then
+    printf "%s%s %s %s%% %s" "$dark_bg" "$accent" "󱈏" "$battery" "$s2d_reset"
+elif [ "$status" = "Charging" ]; then
+    case 1 in
+        $((battery == 100)) ) icon="󰂅" ;;
+        $((battery >= 90)) ) icon="󰂋" ;;
+        $((battery >= 80)) ) icon="󰂊" ;;
+        $((battery >= 70)) ) icon="󰢞" ;;
+        $((battery >= 60)) ) icon="󰂉" ;;
+        $((battery >= 50)) ) icon="󰢝" ;;
+        $((battery >= 40)) ) icon="󰂈" ;;
+        $((battery >= 30)) ) icon="󰂇" ;;
+        $((battery >= 20)) ) icon="󰂆" ;;
+        $((battery >= 10)) ) icon="󰢜" ;;
+        $((battery >= 0)) ) icon="󰢟" ;;
+    esac
+else
+    case 1 in
+        $((battery == 100)) ) icon="󰁹" ;;
+        $((battery >= 90)) ) icon="󰂂" ;;
+        $((battery >= 80)) ) icon="󰂁" ;;
+        $((battery >= 70)) ) icon="󰂀" ;;
+        $((battery >= 60)) ) icon="󰁿" ;;
+        $((battery >= 50)) ) icon="󰁾" ;;
+        $((battery >= 40)) ) icon="󰁽" ;;
+        $((battery >= 30)) ) icon="󰁼" ;;
+        $((battery >= 20)) ) icon="󰁻" ;;
+        $((battery >= 10)) ) icon="󰁺" ;;
+        $((battery >= 0)) )
+            icon="󰂎"
+            notify-send "Battery almost empty! Please charge."
+            ;;
+    esac
+fi
+
+printf "%s%s %s %s%% %s" "$dark_bg" "$accent" "$icon" "$battery" "$s2d_reset"

@@ -8,5 +8,9 @@ case $BLOCK_BUTTON in
 	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
+if [ ! -f /tmp/current_kb_layout.txt ]; then
+	echo 'us' > /tmp/current_kb_layout.txt
+fi
+
 kb=$(</tmp/current_kb_layout.txt)
 printf "%s%s %s %s" "$dark_bg" "$accent" "$kb" "$s2d_reset" && exit 0

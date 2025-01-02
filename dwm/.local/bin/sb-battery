@@ -8,6 +8,10 @@ case $BLOCK_BUTTON in
     6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
+if [ ! -f /sys/class/power_supply/BAT0/capacity ]; then
+    exit 0
+fi
+
 battery=$(cat /sys/class/power_supply/BAT0/capacity)
 status=$(cat /sys/class/power_supply/BAT0/status)
 

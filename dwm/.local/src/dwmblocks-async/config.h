@@ -18,6 +18,7 @@
 
 // Define blocks for the status feed as X(cmd, interval, signal, position).
 #define BLOCKS(X)               \
+    X("sb-battery", 60, 13, 0)  \
     X("sb-mic", 0, 6, 0)        \
     X("sb-volume", 0, 7, 0)     \
     X("sb-kbselect", 0, 8, 0)   \

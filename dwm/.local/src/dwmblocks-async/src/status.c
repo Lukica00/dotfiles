@@ -37,7 +37,7 @@ bool status_update(status *const status) {
     for (unsigned short i = 0; i < status->block_count; ++i) {
         const block *const block = &status->blocks[i];
 
-        const char* current = top;
+        char* current = top;
         if (block->position == 1)
             current = bottom_left;
         else if (block->position == 2)
@@ -72,11 +72,11 @@ bool status_update(status *const status) {
     }
 #endif
 
-    (void)strncat(status->current, top, LEN(top));
+    (void)strncat(status->current, top, LEN(top) - 1);
     (void)strncat(status->current, ";", LEN(";"));
-    (void)strncat(status->current, bottom_left, LEN(bottom_left));
+    (void)strncat(status->current, bottom_left, LEN(bottom_left) - 1);
     (void)strncat(status->current, ";", LEN(";"));
-    (void)strncat(status->current, bottom_right, LEN(bottom_right));
+    (void)strncat(status->current, bottom_right, LEN(bottom_right) - 1);
     return has_status_changed(status);
 }
 

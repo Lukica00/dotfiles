@@ -2866,7 +2866,7 @@ void
 viewscroll(const Arg *arg)
 {
 	/* 1 skrol gore, 2 skrol dole */
-	if (arg->ui == 1){
+	if (arg->i == 1){
 		selmon->tagset[selmon->seltags] = (selmon->tagset[selmon->seltags] << 1) & TAGMASK;
 		if (!selmon->tagset[selmon->seltags])
 			selmon->tagset[selmon->seltags] = 1;

@@ -7,6 +7,7 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayonleft  = 1;   /* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 10;   /* systray spacing */
+static const int scrolldirection = 1;        /* 1 means scroll up bigger tag, 0 opposite */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -153,34 +154,14 @@ static const Button buttons[] = {
 	{ ClkStatusText,        MODKEY,         Button3,        sigstatusbar,   {.i = 7} }, // desni + mod klik
 	{ ClkStatusText,	MODKEY,		Button4,	sigstatusbar,	{.i = 9} }, // skrol gore + mod klik
 	{ ClkStatusText,	MODKEY,		Button5,	sigstatusbar,	{.i = 10} }, // skrol dole + mod klik
-	// { ClkExBarLeftStatus,   0,              Button1,        sigstatusbar,   {.i = 1} }, // levi klik
-	// { ClkExBarLeftStatus,   0,              Button2,        sigstatusbar,   {.i = 3} }, // srednji klik
-	// { ClkExBarLeftStatus,   0,              Button3,        sigstatusbar,   {.i = 2} }, // desni klik
-	// { ClkExBarLeftStatus,   0,              Button4,        sigstatusbar,   {.i = 4} }, // skrol gore
-	// { ClkExBarLeftStatus,   0,              Button5,        sigstatusbar,   {.i = 5} }, // skrol dole
-	// { ClkExBarLeftStatus,   MODKEY,         Button1,        sigstatusbar,   {.i = 6} }, // levi + mod klik
-	// { ClkExBarLeftStatus,   MODKEY,         Button2,        sigstatusbar,   {.i = 8} }, // srednji + mod klik
-	// { ClkExBarLeftStatus,   MODKEY,         Button3,        sigstatusbar,   {.i = 7} }, // desni + mod klik
-	// { ClkExBarLeftStatus,	MODKEY,		Button4,	sigstatusbar,	{.i = 9} }, // skrol gore + mod klik
-	// { ClkExBarLeftStatus,	MODKEY,		Button5,	sigstatusbar,	{.i = 10} }, // skrol dole + mod klik
-	// { ClkExBarRightStatus,  0,              Button1,        sigstatusbar,   {.i = 1} }, // levi klik
-	// { ClkExBarRightStatus,  0,              Button2,        sigstatusbar,   {.i = 3} }, // srednji klik
-	// { ClkExBarRightStatus,  0,              Button3,        sigstatusbar,   {.i = 2} }, // desni klik
-	// { ClkExBarRightStatus,  0,              Button4,        sigstatusbar,   {.i = 4} }, // skrol gore
-	// { ClkExBarRightStatus,  0,              Button5,        sigstatusbar,   {.i = 5} }, // skrol dole
-	// { ClkExBarRightStatus,  MODKEY,         Button1,        sigstatusbar,   {.i = 6} }, // levi + mod klik
-	// { ClkExBarRightStatus,  MODKEY,         Button2,        sigstatusbar,   {.i = 8} }, // srednji + mod klik
-	// { ClkExBarRightStatus,  MODKEY,         Button3,        sigstatusbar,   {.i = 7} }, // desni + mod klik
-	// { ClkExBarRightStatus,	MODKEY,		Button4,	sigstatusbar,	{.i = 9} }, // skrol gore + mod klik
-	// { ClkExBarRightStatus,	MODKEY,		Button5,	sigstatusbar,	{.i = 10} }, // skrol dole + mod klik
 	{ ClkExBarMiddle,	0,		Button1,	spawn,		{.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            0,              Button4,        viewscroll,     {1} }, // skrol gore
-	{ ClkTagBar,            0,              Button5,        viewscroll,     {0} }, // skrol dole
+	{ ClkTagBar,            0,              Button4,        viewscroll,     {.i = 1 + scrolldirection} }, // skrol gore
+	{ ClkTagBar,            0,              Button5,        viewscroll,     {.i = 2 - scrolldirection} }, // skrol dole
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };

@@ -17,6 +17,7 @@ status=$(cat /sys/class/power_supply/BAT0/status)
 
 if [ "$status" = "Full" ]; then
     printf "%s%s %s %s%% %s" "$dark_bg" "$accent" "󱈏" "$battery" "$s2d_reset"
+    exit 0
 elif [ "$status" = "Charging" ]; then
     case 1 in
         $((battery == 100)) ) icon="󰂅" ;;

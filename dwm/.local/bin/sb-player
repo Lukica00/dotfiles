@@ -1,0 +1,19 @@
+#!/bin/sh
+
+source sb-status2d
+
+# Prints media player status
+
+case $BLOCK_BUTTON in
+	1) playerctl play-pause ;;
+	3) notify-send "󰐎 Media module" "\- Shows if  playing,  otherwise.
+- Left click to toggle playing status." ;;
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+status="$(playerctl status)"
+
+[ "$status" = "Playing" ] && printf "%s%s %s %s" "$dark_bg" "$accent" "" "$s2d_reset" && exit 0
+
+printf "%s%s %s %s" "$dark_bg" "$accent" "" "$s2d_reset" && exit 0
+

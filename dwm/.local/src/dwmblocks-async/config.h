@@ -21,6 +21,7 @@
     X("sb-battery", 60, 13, 0)  \
     X("sb-mic", 0, 6, 0)        \
     X("sb-volume", 0, 7, 0)     \
+    X("sb-player", 2, 14, 0)     \
     X("sb-kbselect", 0, 8, 0)   \
     X("sb-date", 1, 10, 0)      \
     X("sb-power", 0, 5, 1)      \

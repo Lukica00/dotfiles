@@ -116,6 +116,7 @@ static const Key keys[] = {
 	{ MODKEY,		122,	spawn,		BLKCMD(sb-mic, 5, 40) },	//mic-down
 	{ 0,			123,	spawn,		BLKCMD(sb-volume, 4, 41) },	//volume-up
 	{ MODKEY,		123,	spawn,		BLKCMD(sb-mic, 4, 40) },	//mic-up
+	{ 0,			172,	spawn,		BLKCMD(sb-player, 1, 48) },	//play-pause
 	{ 0,			232,	spawn,		BLKCMD(sb-brightness, 5, 45) },	//brightness-down
 	{ 0,			233,	spawn,		BLKCMD(sb-brightness, 4, 45) },	//brightness-up
 	{ MODKEY,		232,	spawn,		BLKCMD(sb-brightness, 10, 45) },//brightness-down

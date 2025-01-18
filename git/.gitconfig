@@ -5,3 +5,10 @@
 	tool = nvimdiff
 [core]
 	autocrlf = input
+[merge]
+	tool = nvimdiff
+	conflictstyle = diff3
+[pull]
+	rebase = false
+[mergetool "nvimdiff"]
+	cmd = nvim -d \"$LOCAL\" \"$MERGED\" \"$BASE\" \"$REMOTE\" -c \"wincmd w\" -c \"wincmd J\"

@@ -1,5 +1,7 @@
+export XCURSOR_SIZE=32
+~/.screenlayout/kp.sh
 setxkbmap -layout "us,rs,gb,rs" -variant ",latin,," -option "grp:alt_shift_toggle,caps:swapescape"
-xrandr --output HDMI-1 --left-of HDMI-0
+xset b off
 feh --bg-scale ~/.background &
 picom &
 dunst &

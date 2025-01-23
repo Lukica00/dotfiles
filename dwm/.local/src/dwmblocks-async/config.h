@@ -31,6 +31,7 @@
     X("sb-trackpad", 0, 12, 2)  \
     X("sb-brightness", 0, 11, 2)\
     X("sb-nettraf", 5, 1, 2)    \
-    X("sb-internet", 60, 9, 2)
+    X("sb-internet", 60, 9, 2)  \
+    X("sb-dnd", 0, 15, 2)
 
 #endif  // CONFIG_H

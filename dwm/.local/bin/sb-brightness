@@ -3,12 +3,12 @@
 source sb-status2d
 
 # Prints the current brightness level if availible.
-if [ ! -d "/sys/class/backlight/intel_backlight" ]; then
+if [ ! -d "/sys/class/backlight/nvidia_0" ]; then
 	exit 0
 fi
-max=$(< /sys/class/backlight/intel_backlight/max_brightness)
+max=$(< /sys/class/backlight/nvidia_0/max_brightness)
 cent=$(echo "scale=2; $max / 100" | bc)
-old=$(< /sys/class/backlight/intel_backlight/brightness)
+old=$(< /sys/class/backlight/nvidia_0/brightness)
 val=$old
 change () {
 	val=$(echo "scale=0; ($old + $1 * $cent) / 1" | bc)
@@ -18,7 +18,7 @@ change () {
 	if (( $val > $max )); then
 		val=$max
 	fi
-	echo $val > /sys/class/backlight/intel_backlight/brightness
+	echo $val > /sys/class/backlight/nvidia_0/brightness
 }
 case $BLOCK_BUTTON in
 	4) change 10 ;;

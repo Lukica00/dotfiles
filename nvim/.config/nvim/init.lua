@@ -470,7 +470,7 @@ require("lazy").setup({
 				--    https://github.com/pmizio/typescript-tools.nvim
 				--
 				-- But for many setups, the LSP (`tsserver`) will work just fine
-				tsserver = {},
+				-- tsserver = {},
 
 				lua_ls = {
 					-- cmd = {...},
@@ -739,7 +739,7 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		opts = {
-			ensure_installed = { "bash", "c", "html", "lua", "luadoc", "vim", "vimdoc" },
+			ensure_installed = { "bash", "c", "html", "lua", "luadoc", "vim", "vimdoc", "sql" },
 			-- Autoinstall languages that are not installed
 			auto_install = true,
 			highlight = {
@@ -764,6 +764,11 @@ require("lazy").setup({
 			--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
 			--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 		end,
+	},
+
+	{
+		"tpope/vim-fugitive",
+		cmd = "Git",
 	},
 
 	-- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+source sb-status2d
+
+# Print DnD status
+
+case $BLOCK_BUTTON in
+	1) dunstctl set-paused toggle ;;
+	3) notify-send " DnD module" "\- Shows   if silent in red, othervise in white." ;;
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+status="$(dunstctl is-paused)"
+
+[ "$status" = "false" ] && printf "%s%s %s  %s" "$dark_bg" "$accent" "" "$s2d_reset" && exit 0
+
+printf "%s%s %s  %s" "$red_bg" "$dark" "" "$s2d_reset" && exit 0
+

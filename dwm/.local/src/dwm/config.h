@@ -110,8 +110,10 @@ static const Key keys[] = {
 	{ MODKEY,               21,	setgaps,        {.i = +5 } },	// equals
 	{ MODKEY|ShiftMask,     20,	setgaps,        {.i = GAP_RESET } }, // minus
 	{ MODKEY|ShiftMask,	21,	setgaps,        {.i = GAP_TOGGLE} }, // equals
+	{ MODKEY|ShiftMask,	39,	swapmon,	{0} },		// s
 	{ 0,			121,	spawn,		BLKCMD(sb-volume, 2, 41) },	//volume-mute
 	{ MODKEY,		121,	spawn,		BLKCMD(sb-mic, 2, 40) },	//mic-mute
+	{ 0,			198,	spawn,		BLKCMD(sb-mic, 2, 40) },	//mic-mute XF86AudioMicMute
 	{ 0,			122,	spawn,		BLKCMD(sb-volume, 5, 41) },	//volume-down
 	{ MODKEY,		122,	spawn,		BLKCMD(sb-mic, 5, 40) },	//mic-down
 	{ 0,			123,	spawn,		BLKCMD(sb-volume, 4, 41) },	//volume-up

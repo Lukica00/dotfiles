@@ -1,5 +1,4 @@
 alacritty
-amd-ucode
 base
 base-devel
 bc
@@ -23,7 +22,6 @@ man-pages
 nano
 neovim
 networkmanager
-nvidia
 picom
 pipewire
 pipewire-pulse
@@ -88,3 +86,4 @@ xorg-xwud
 zsh
 openssh
 ripgrep
+playerctl
